@@ -1,7 +1,6 @@
 package main
 
 func deleteNode(root *TreeNode, key int) *TreeNode {
-
 	//总共3种情况
 	//1、node只有左树，保留左
 	//1、node只有右树，保留右

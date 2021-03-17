@@ -4,7 +4,6 @@ import "math"
 
 func isValidBST(root *TreeNode) bool {
 	return helper(root, math.MinInt64, math.MaxInt64)
-
 }
 
 // 递归的思路，

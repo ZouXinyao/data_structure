@@ -2,7 +2,6 @@ package main
 
 
 // 一样使用中序遍历，但是传入的参数有点多，所以使用了将函数写成变量的方式。
-
 func findMode(root *TreeNode) []int {
 	var res []int
 	var cnt int
