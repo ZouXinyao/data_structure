@@ -1,4 +1,4 @@
-package backtracking
+package main
 
 // 与77类似
 func combinationSum(candidates []int, target int) [][]int {

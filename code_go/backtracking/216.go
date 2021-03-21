@@ -1,4 +1,4 @@
-package backtracking
+package main
 
 func combinationSum3(k int, n int) [][]int {
 	sum := 0

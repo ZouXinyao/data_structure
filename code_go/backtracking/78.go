@@ -1,4 +1,4 @@
-package backtracking
+package main
 
 func subsets(nums []int) [][]int {
 	var res [][]int

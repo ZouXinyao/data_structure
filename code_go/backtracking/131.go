@@ -1,4 +1,4 @@
-package backtracking
+package main
 
 func partition(s string) [][]string {
 	var res [][]string

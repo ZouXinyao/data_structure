@@ -1,4 +1,4 @@
-package backtracking
+package main
 
 func majorityElement(nums []int) int {
 	var count func(num, l, r int) int			// 求num在l-r范围内的数量

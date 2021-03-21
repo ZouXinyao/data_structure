@@ -1,4 +1,4 @@
-package backtracking
+package main
 
 import (
 	"strconv"

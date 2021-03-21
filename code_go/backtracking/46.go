@@ -1,4 +1,4 @@
-package backtracking
+package main
 
 func permute(nums []int) [][]int {
 	var res [][]int
