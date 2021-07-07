@@ -37,7 +37,75 @@ trie.search("app");     // 返回 True
 - `insert`、`search` 和 `startsWith` 调用次数 **总计** 不超过 `3 * 104` 次
 
 ```
+type Trie struct {
+    subTrie map[byte]*Trie
+    isEnd bool
+}
 
+
+/** Initialize your data structure here. */
+func Constructor() Trie {
+    return Trie{
+        subTrie: map[byte]*Trie{},
+        isEnd: false,
+    }
+}
+
+
+/** Inserts a word into the trie. */
+func (t *Trie) Insert(word string)  {
+	root := t
+	for i := 0; i < len(word); i++ {
+		node, ok := root.subTrie[word[i]]
+		if ok {
+			root = node
+		} else {
+			newNode := Constructor()
+			root.subTrie[word[i]] = &newNode
+			root = root.subTrie[word[i]]
+		}
+	}
+	root.isEnd = true
+}
+
+
+/** Returns if the word is in the trie. */
+func (t *Trie) Search(word string) bool {
+    root := t
+    for i := 0; i < len(word); i++ {
+        node, ok := root.subTrie[word[i]]
+        if ok {
+            root = node
+        } else {
+            return false
+        }
+    }
+    return root.isEnd
+}
+
+
+/** Returns if there is any word in the trie that starts with the given prefix. */
+func (t *Trie) StartsWith(prefix string) bool {
+    root := t
+    for i := 0; i < len(prefix); i++ {
+        node, ok := root.subTrie[prefix[i]]
+        if ok {
+            root = node
+        } else {
+            return false
+        }
+    }
+    return true
+}
+
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Insert(word);
+ * param_2 := obj.Search(word);
+ * param_3 := obj.StartsWith(prefix);
+ */
 ```
 
 
@@ -80,6 +148,76 @@ trie.search("app");     // 返回 True
 - `words` 中的所有字符串互不相同
 
 ```
+// 按照模板写UnionFound也可以，不过回溯的条件不好弄，会超时。
+func findWords(board [][]byte, words []string) []string {
+	root := Constructor()
+	for i := 0; i < len(words); i++ {
+		root.Insert(words[i])
+	}
+	res := []string{}
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[0]); j++ {
+			dfs(board, i, j, &res, &root)
+		}
+	}
+	return res
+}
+
+var dirX = []int{0, 1, -1, 0}
+var dirY = []int{-1, 0, 0, 1}
+
+func dfs(board [][]byte, x, y int, res *[]string, node *Trie) {
+	if x < 0 || y < 0 || x >= len(board) || y >= len(board[0]){
+		return
+	}
+	temp := board[x][y]
+	
+	if _, ok := node.subTrie[temp]; !ok {
+		return
+	}
+	node = node.subTrie[temp]
+	if node.word != "" {
+		*res = append(*res, node.word)
+		node.word = ""
+	}
+
+
+	board[x][y] = '*'
+	for i := 0; i < 4; i++ {
+		tx := dirX[i] + x
+		ty := dirY[i] + y
+		dfs(board, tx, ty, res, node)
+	}
+	board[x][y] = temp
+}
+
+type Trie struct {
+	subTrie map[byte]*Trie
+	word string
+}
+
+
+func Constructor() Trie {
+	return Trie{
+		subTrie: map[byte]*Trie{},
+		word: "", // 标识Trie中存在的word，方便删除。
+	}
+}
+
+func (this *Trie) Insert(word string)  {
+	root := this
+	for i := 0; i < len(word); i++ {
+		node, ok := root.subTrie[word[i]]
+		if ok {
+			root = node
+		} else {
+			newNode := Constructor()
+			root.subTrie[word[i]] = &newNode
+			root = root.subTrie[word[i]]
+		}
+	}
+	root.word = word
+}
 
 ```
 
