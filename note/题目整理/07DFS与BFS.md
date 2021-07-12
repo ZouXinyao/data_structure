@@ -49,7 +49,38 @@ bank: ["AAAACCCC", "AAACCCCC", "AACCCCCC"]
 ```
 
 ```
-
+func minMutation(start string, end string, bank []string) int {
+    cList := []string{"A", "C", "G", "T"}
+    visited := map[string]bool{}
+    bSet := map[string]bool{}
+    for _, b := range bank {
+        visited[b] = false
+        bSet[b] = true
+    }
+    visited[start] = false
+    ans := 0
+    queue := []string{start}
+    for len(queue) != 0 {
+        length := len(queue)
+        ans++
+        for l := 0; l < length; l++ {
+            b := queue[0]
+            queue = queue[1:]
+            for i := 0; i < len(start); i++ {
+                for j := 0; j < len(cList); j++ {
+                    newBank := b[:i] + cList[j] + b[i + 1:]
+                    if i, ok := bSet[newBank]; (ok && i == false) || ! ok { continue }
+                    if visited[newBank] == true { continue }
+                    if newBank == end { return ans }
+                    visited[newBank] = true
+                    queue = append(queue, newBank)
+                }
+            }
+        }
+        
+    }
+    return -1
+}
 ```
 
 
@@ -75,7 +106,32 @@ bank: ["AAAACCCC", "AAACCCCC", "AACCCCCC"]
 ```
 
 ```
+func largestValues(root *TreeNode) []int {
+    ans := []int{}
+    if root == nil { return ans }
+    
+    queue := []*TreeNode{root}
+    for len(queue) != 0 {
+        length := len(queue)
+        temp := math.MinInt32
+        for i := 0; i < length; i++ {
+            node := queue[0]
+            queue = queue[1:]
+            temp = max(temp, node.Val)
+            if node.Left != nil { queue = append(queue, node.Left) }
+            if node.Right != nil { queue = append(queue, node.Right) }
+        }
+        ans = append(ans, temp)
+    }
+    return ans
+}
 
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
 ```
 
 
@@ -120,7 +176,36 @@ bank: ["AAAACCCC", "AAACCCCC", "AACCCCCC"]
 - `wordList` 中的所有字符串 **互不相同**
 
 ```
+func ladderLength(beginWord string, endWord string, wordList []string) int {
+	visited := map[string]bool{}
+	for i := 0; i < len(wordList); i++ {
+		visited[wordList[i]] = true
+	}
 
+	queue := []string{beginWord}
+	level := 1
+	for len(queue) != 0 {
+		length := len(queue)
+		for i := 0; i < length; i++ {
+			word := queue[0]
+			queue = queue[1:]
+			if word == endWord {
+				return level
+			}
+			for c := 0; c < len(word); c++ {
+				for j := 'a'; j <= 'z'; j++ {
+					newWord := word[:c] + string(j) + word[c + 1:]
+					if visited[newWord] {
+						queue = append(queue, newWord)
+						visited[newWord] = false
+					}
+				}
+			}
+		}
+		level++
+	}
+	return 0
+}
 ```
 
 
@@ -166,6 +251,69 @@ bank: ["AAAACCCC", "AAACCCCC", "AACCCCCC"]
 - `wordList` 中的所有单词 **互不相同**
 
 ```
+func findLadders(beginWord string, endWord string, wordList []string) [][]string {
+    wordSet := map[string]bool{}
+    visited := map[string]bool{}
+    levelMap := map[string]int{}
+    for i := 0; i < len(wordList); i++ {
+        visited[wordList[i]] = false
+        wordSet[wordList[i]] = true
+        levelMap[wordList[i]] = -1
+    }
+    results := map[string][]string{}
+
+    queue := []string{beginWord}
+    visited[beginWord] = false
+    level := -1
+    for len(queue) != 0 {
+        length := len(queue)
+        level++
+        for l := 0; l < length; l++ {
+            word := queue[0]
+            queue = queue[1:]
+            temp := []string{}
+            for i := 0; i < len(word); i++ {
+                for c := 'a'; c <= 'z'; c++ {
+                    newWord := word[:i] + string(c) + word[i + 1:]
+                    if _, ok := wordSet[newWord]; !ok { continue }
+                    if newWord == word { continue }
+                    temp = append(temp, newWord)
+                    if w, ok := levelMap[newWord]; ok && w > -1 { continue }
+                    levelMap[newWord] = level
+                    if visited[newWord] == true { continue }
+                    visited[newWord] = true
+                    queue = append(queue, newWord)
+                }
+            }
+            results[word] = temp
+        }
+    }
+
+    ans := [][]string{}
+    var dfs func(temp []string, word string, level int)
+    dfs = func(temp []string, word string, level int) {
+        if word == endWord {
+            temp = append(temp, endWord)
+            t := make([]string, len(temp))
+            copy(t, temp)
+            ans = append(ans, t)
+        }
+
+        temp = append(temp, word)
+        child := results[word]
+        for i := 0; i < len(child); i++ {
+            if levelMap[child[i]] == level {
+                dfs(temp, child[i], level + 1)
+            }
+        }
+        temp = temp[:len(temp) - 1]
+    }
+    
+    dfs([]string{}, beginWord, 0)
+    return ans
+}
+
+
 
 ```
 
@@ -213,7 +361,34 @@ bank: ["AAAACCCC", "AAACCCCC", "AACCCCCC"]
 - `grid[i][j]` 的值为 `'0'` 或 `'1'`
 
 ```
+func numIslands(grid [][]byte) int {
+	n := len(grid)
+	if n == 0 { return 0 }
+	m := len(grid[0])
+	if m == 0 { return 0 }
+	count := 0
+	for i := 0; i < n; i++ {
+		for j := 0; j < m; j++ {
+			if grid[i][j] == '1' {
+				dfs(grid, i, j)
+				count++
+			}
 
+		}
+	}
+	return count
+}
+
+func dfs(grid [][]byte, i, j int)  {
+	if i < 0 || j < 0 || i >= len(grid) || j >= len(grid[0]) || grid[i][j] == '0' {
+		return
+	}
+	grid[i][j] = '0'
+	dfs(grid, i + 1, j)
+	dfs(grid, i - 1, j)
+	dfs(grid, i, j + 1)
+	dfs(grid, i, j - 1)
+}
 ```
 
 
@@ -289,7 +464,48 @@ Click : [1,2]
 4. 简单起见，未提及的规则在这个问题中可被忽略。例如，当游戏结束时你不需要挖出所有地雷，考虑所有你可能赢得游戏或标记方块的情况。
 
 ```
+func updateBoard(board [][]byte, click []int) [][]byte {
+	if board[click[0]][click[1]] == 'M' {
+		board[click[0]][click[1]] = 'X'
+		return board
+	}
 
+	dfs(board, click[0], click[1])
+	return board
+}
+
+var dirX = []int{-1, -1, -1,  0, 0,  1, 1, 1}
+var dirY = []int{-1,  0,  1, -1, 1, -1, 0, 1}
+
+func dfs(board [][]byte, x, y int) {
+	cnt := 0
+	for i := 0; i < 8; i++ {
+		tx := x + dirX[i]
+		ty := y + dirY[i]
+		if tx < 0 || ty < 0 || tx >= len(board) || ty >= len(board[0]) {
+			continue
+		}
+		if board[tx][ty] == 'M' {
+			cnt++
+		}
+	}
+
+	if cnt > 0 {
+		board[x][y] = '0' + byte(cnt)
+	} else {
+		board[x][y] = 'B'
+		for i := 0; i < 8; i++ {
+			tx := x + dirX[i]
+			ty := y + dirY[i]
+			if tx < 0 || ty < 0 || tx >= len(board) || ty >= len(board[0]) {
+				continue
+			}
+			if board[tx][ty] == 'E' {
+				dfs(board, tx, ty)
+			}
+		}
+	}
+}
 ```
 
 
@@ -353,7 +569,24 @@ Click : [1,2]
 - `board[i][j]` 是一位数字或者 `'.'`
 
 ```
+func isValidSudoku(board [][]byte) bool {
+    rows := [9][9]bool{}
+    cols := [9][9]bool{}
+    boxes := [9][9]bool{}
 
+    for i := 0; i < 9; i++ {
+        for j := 0; j < 9; j++ {
+            if board[i][j] == '.' { continue }
+            idx := int(board[i][j] - '1')
+            boxIdx := (i / 3) * 3 + j / 3
+            if rows[i][idx] || cols[j][idx] || boxes[boxIdx][idx] { return false }
+            rows[i][idx] = true
+            cols[j][idx] = true
+            boxes[boxIdx][idx] = true
+        }
+    }
+    return true
+}
 ```
 
 
@@ -390,7 +623,42 @@ Click : [1,2]
 - 题目数据 **保证** 输入数独仅有一个解
 
 ```
-
+func solveSudoku(board [][]byte)  {
+    var isvilad func(i, j int, val byte) bool
+    isvilad = func(x, y int, val byte) bool {
+        for i := 0; i < 9; i++ {
+            if board[x][i] == val || board[i][y] == val { return false }
+        }
+        for i := 0; i < 3; i++ {
+            for j := 0; j < 3; j++ {
+                tx := (x / 3) * 3
+                ty := (y / 3) * 3
+                if board[i + tx][j + ty] == val { return false }
+            }
+        }
+        return true
+    }
+    var dfs func() bool
+    dfs = func() bool {
+        for i := 0; i < 9; i++ {
+            for j := 0; j < 9; j++ {
+                if board[i][j] != '.' { continue }
+                var k byte
+                for k = '1'; k <= '9'; k++ {
+                    if !isvilad(i, j, k) { continue }
+                    board[i][j] = k
+                    if dfs() {
+                        return true
+                    }
+                    board[i][j]='.'
+                }
+                return false
+            }
+        }
+        return true
+    }
+    dfs()
+}
 ```
 
 
@@ -441,7 +709,44 @@ Click : [1,2]
 - `grid[i][j]` 为 `0` 或 `1`
 
 ```
+func shortestPathBinaryMatrix(grid [][]int) int {
+	rows := len(grid)
+	if grid == nil || rows == 0 || grid[0][0] == 1 || grid[rows-1][rows-1] == 1 {
+		return -1
+	}
+	if len(grid) == 1 && grid[0][0] == 0 {
+		return 1
+	}
+	direction := []int{-1, 0, 1}
+	grid[0][0] = 1
+	//途经的每一个点都记录从起点到次的长度
+	que := make([]int, 0)
+	que = append(que, 0)
+	//用que记录当前点的坐标，判断有没有下一个节点
 
+	var x, y, nx, ny int
+
+	for len(que) > 0 {
+		x, y = que[0]/rows, que[0]%rows
+		que = que[1:]
+		for _, i := range direction {
+			for _, j := range direction {
+				if i == j && i == 0 {
+					continue
+				}
+				nx, ny = x+i, y+j
+				if nx < rows && ny < rows && nx >= 0 && ny >= 0 && grid[nx][ny] == 0 {
+					que = append(que, nx*rows+ny)
+					grid[nx][ny] = grid[x][y] + 1
+					if nx == rows-1 && ny == rows-1 {
+						return grid[nx][ny]
+					}
+				}
+			}
+		}
+	}
+	return -1
+}
 ```
 
 
@@ -479,6 +784,58 @@ sr = 1, sc = 1, newColor = 2
 - `image[i][j]` 和 `newColor` 表示的颜色值在范围 `[0, 65535]`内。
 
 ```
+var (
+    dx = []int{1, 0, 0, -1}
+    dy = []int{0, 1, -1, 0}
+)
 
+func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
+    currColor := image[sr][sc]
+    if currColor == newColor {
+        return image
+    }
+    n, m := len(image), len(image[0])
+    queue := [][]int{}
+    queue = append(queue, []int{sr, sc})
+    image[sr][sc] = newColor
+    for i := 0; i < len(queue); i++ {
+        cell := queue[i]
+        for j := 0; j < 4; j++ {
+            mx, my := cell[0] + dx[j], cell[1] + dy[j]
+            if mx >= 0 && mx < n && my >= 0 && my < m && image[mx][my] == currColor {
+                queue = append(queue, []int{mx, my})
+                image[mx][my] = newColor
+            }
+        }
+    }
+    return image
+}
+```
+
+```
+var (
+    dx = []int{1, 0, 0, -1}
+    dy = []int{0, 1, -1, 0}
+)
+
+func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
+    currColor := image[sr][sc]
+    if currColor != newColor {
+        dfs(image, sr, sc, currColor, newColor)
+    }
+    return image
+}
+
+func dfs(image [][]int, x, y, color, newColor int) {
+    if image[x][y] == color {
+        image[x][y] = newColor
+        for i := 0; i < 4; i++ {
+            mx, my := x + dx[i], y + dy[i]
+            if mx >= 0 && mx < len(image) && my >= 0 && my < len(image[0]) {
+                dfs(image, mx, my, color, newColor)
+            }
+        }
+    }
+}
 ```
 
