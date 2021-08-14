@@ -48,7 +48,7 @@ bank: ["AAAACCCC", "AAACCCCC", "AACCCCCC"]
 返回值: 3
 ```
 
-```
+```go
 func minMutation(start string, end string, bank []string) int {
     cList := []string{"A", "C", "G", "T"}
     visited := map[string]bool{}
@@ -105,7 +105,7 @@ func minMutation(start string, end string, bank []string) int {
 输出: [1, 3, 9]
 ```
 
-```
+```go
 func largestValues(root *TreeNode) []int {
     ans := []int{}
     if root == nil { return ans }
@@ -175,7 +175,7 @@ func max(a, b int) int {
 - `beginWord != endWord`
 - `wordList` 中的所有字符串 **互不相同**
 
-```
+```go
 func ladderLength(beginWord string, endWord string, wordList []string) int {
 	visited := map[string]bool{}
 	for i := 0; i < len(wordList); i++ {
@@ -250,7 +250,7 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
 - `beginWord != endWord`
 - `wordList` 中的所有单词 **互不相同**
 
-```
+```go
 func findLadders(beginWord string, endWord string, wordList []string) [][]string {
     wordSet := map[string]bool{}
     visited := map[string]bool{}
@@ -360,7 +360,7 @@ func findLadders(beginWord string, endWord string, wordList []string) [][]string
 - `1 <= m, n <= 300`
 - `grid[i][j]` 的值为 `'0'` 或 `'1'`
 
-```
+```go
 func numIslands(grid [][]byte) int {
 	n := len(grid)
 	if n == 0 { return 0 }
@@ -463,7 +463,7 @@ Click : [1,2]
 3. 输入面板不会是游戏结束的状态（即有地雷已被挖出）。
 4. 简单起见，未提及的规则在这个问题中可被忽略。例如，当游戏结束时你不需要挖出所有地雷，考虑所有你可能赢得游戏或标记方块的情况。
 
-```
+```go
 func updateBoard(board [][]byte, click []int) [][]byte {
 	if board[click[0]][click[1]] == 'M' {
 		board[click[0]][click[1]] = 'X'
@@ -568,7 +568,7 @@ func dfs(board [][]byte, x, y int) {
 - `board[i].length == 9`
 - `board[i][j]` 是一位数字或者 `'.'`
 
-```
+```go
 func isValidSudoku(board [][]byte) bool {
     rows := [9][9]bool{}
     cols := [9][9]bool{}
@@ -622,7 +622,7 @@ func isValidSudoku(board [][]byte) bool {
 - `board[i][j]` 是一位数字或者 `'.'`
 - 题目数据 **保证** 输入数独仅有一个解
 
-```
+```go
 func solveSudoku(board [][]byte)  {
     var isvilad func(i, j int, val byte) bool
     isvilad = func(x, y int, val byte) bool {
@@ -708,7 +708,7 @@ func solveSudoku(board [][]byte)  {
 - `1 <= n <= 100`
 - `grid[i][j]` 为 `0` 或 `1`
 
-```
+```go
 func shortestPathBinaryMatrix(grid [][]int) int {
 	rows := len(grid)
 	if grid == nil || rows == 0 || grid[0][0] == 1 || grid[rows-1][rows-1] == 1 {
@@ -783,7 +783,7 @@ sr = 1, sc = 1, newColor = 2
 - 给出的初始点将满足 `0 <= sr < image.length` 和 `0 <= sc < image[0].length`。
 - `image[i][j]` 和 `newColor` 表示的颜色值在范围 `[0, 65535]`内。
 
-```
+```go
 var (
     dx = []int{1, 0, 0, -1}
     dy = []int{0, 1, -1, 0}
@@ -812,7 +812,7 @@ func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
 }
 ```
 
-```
+```go
 var (
     dx = []int{1, 0, 0, -1}
     dy = []int{0, 1, -1, 0}
