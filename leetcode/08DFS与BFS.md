@@ -1,7 +1,5 @@
 #### [433. 最小基因变化](https://leetcode-cn.com/problems/minimum-genetic-mutation/)
 
-难度中等80
-
 一条基因序列由一个带有8个字符的字符串表示，其中每个字符都属于 `"A"`, `"C"`, `"G"`, `"T"`中的任意一个。
 
 假设我们要调查一个基因序列的变化。**一次**基因变化意味着这个基因序列中的**一个**字符发生了变化。
@@ -83,11 +81,7 @@ func minMutation(start string, end string, bank []string) int {
 }
 ```
 
-
-
 #### [515. 在每个树行中找最大值](https://leetcode-cn.com/problems/find-largest-value-in-each-tree-row/)
-
-难度中等135
 
 您需要在二叉树的每一行中找到最大的值。
 
@@ -134,11 +128,7 @@ func max(a, b int) int {
 }
 ```
 
-
-
 #### [127. 单词接龙](https://leetcode-cn.com/problems/word-ladder/)
-
-难度困难794
 
 字典 `wordList` 中从单词 `beginWord` 和 `endWord` 的 **转换序列** 是一个按下述规格形成的序列：
 
@@ -208,11 +198,7 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
 }
 ```
 
-
-
 #### [126. 单词接龙 II](https://leetcode-cn.com/problems/word-ladder-ii/)
-
-难度困难447
 
 按字典 `wordList` 完成从单词 `beginWord` 到单词 `endWord` 转化，一个表示此过程的 **转换序列** 是形式上像 `beginWord -> s1 -> s2 -> ... -> sk` 这样的单词序列，并满足：
 
@@ -312,16 +298,9 @@ func findLadders(beginWord string, endWord string, wordList []string) [][]string
     dfs([]string{}, beginWord, 0)
     return ans
 }
-
-
-
 ```
 
-
-
 #### [200. 岛屿数量](https://leetcode-cn.com/problems/number-of-islands/)
-
-难度中等1216
 
 给你一个由 `'1'`（陆地）和 `'0'`（水）组成的的二维网格，请你计算网格中岛屿的数量。
 
@@ -391,11 +370,7 @@ func dfs(grid [][]byte, i, j int)  {
 }
 ```
 
-
-
 #### [529. 扫雷游戏](https://leetcode-cn.com/problems/minesweeper/)
-
-难度中等235
 
 让我们一起来玩扫雷游戏！
 
@@ -508,11 +483,7 @@ func dfs(board [][]byte, x, y int) {
 }
 ```
 
-
-
 #### [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
-
-难度中等542
 
 请你判断一个 `9x9` 的数独是否有效。只需要 **根据以下规则** ，验证已经填入的数字是否有效即可。
 
@@ -589,11 +560,7 @@ func isValidSudoku(board [][]byte) bool {
 }
 ```
 
-
-
 #### [37. 解数独](https://leetcode-cn.com/problems/sudoku-solver/)
-
-难度困难876
 
 编写一个程序，通过填充空格来解决数独问题。
 
@@ -661,11 +628,7 @@ func solveSudoku(board [][]byte)  {
 }
 ```
 
-
-
 #### [1091. 二进制矩阵中的最短路径](https://leetcode-cn.com/problems/shortest-path-in-binary-matrix/)
-
-难度中等106
 
 给你一个 `n x n` 的二进制矩阵 `grid` 中，返回矩阵中最短 **畅通路径** 的长度。如果不存在这样的路径，返回 `-1` 。
 
@@ -749,11 +712,7 @@ func shortestPathBinaryMatrix(grid [][]int) int {
 }
 ```
 
-
-
 #### [733. 图像渲染](https://leetcode-cn.com/problems/flood-fill/)
-
-难度简单191
 
 有一幅以二维整数数组表示的图画，每一个整数表示该图画的像素值大小，数值在 0 到 65535 之间。
 

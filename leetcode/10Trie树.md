@@ -1,7 +1,5 @@
 #### [208. 实现 Trie (前缀树)](https://leetcode-cn.com/problems/implement-trie-prefix-tree/)
 
-难度中等806
-
 **[Trie](https://baike.baidu.com/item/字典树/9825209?fr=aladdin)**（发音类似 "try"）或者说 **前缀树** 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。
 
 请你实现 Trie 类：
@@ -36,7 +34,7 @@ trie.search("app");     // 返回 True
 - `word` 和 `prefix` 仅由小写英文字母组成
 - `insert`、`search` 和 `startsWith` 调用次数 **总计** 不超过 `3 * 104` 次
 
-```
+```go
 type Trie struct {
     subTrie map[byte]*Trie
     isEnd bool
@@ -108,11 +106,7 @@ func (t *Trie) StartsWith(prefix string) bool {
  */
 ```
 
-
-
 #### [212. 单词搜索 II](https://leetcode-cn.com/problems/word-search-ii/)
-
-难度困难405
 
 给定一个 `m x n` 二维字符网格 `board` 和一个单词（字符串）列表 `words`，找出所有同时在二维网格和字典中出现的单词。
 
@@ -147,7 +141,7 @@ func (t *Trie) StartsWith(prefix string) bool {
 - `words[i]` 由小写英文字母组成
 - `words` 中的所有字符串互不相同
 
-```
+```go
 // 按照模板写UnionFound也可以，不过回溯的条件不好弄，会超时。
 func findWords(board [][]byte, words []string) []string {
 	root := Constructor()
